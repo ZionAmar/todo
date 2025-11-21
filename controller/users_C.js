@@ -1,4 +1,4 @@
-const {getAll,getOne,remove} = require('../model/users_M.js');
+const {getAll,getOne,remove,update} = require('../model/users_M.js');
 
 async function getAllUsers(req,res) {
     try{
@@ -36,8 +36,21 @@ async function deleteUser(req,res) {
     }
 }
 
+async function updateUser(req,res) {
+    try{
+        let affectedRows = await update(req.id,req.user);
+        if(!affectedRows){
+            return res.status(400).json({message:`User ${req.id} not found!`})
+        }
+        res.status(200).json({message:"updated!"});
+    }catch(err){
+        res.status(500).json({message:"Server error"})
+    }
+}
+
 module.exports={
     getAllUsers,
     getOneUser,
-    deleteUser
+    deleteUser,
+    updateUser
 }

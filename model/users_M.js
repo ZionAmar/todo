@@ -18,8 +18,18 @@ async function remove(id){
     return result.affectedRows;
 }
 
+async function update(id,user){
+    let keys = Object.keys(user);
+    let values = Object.values(user);
+    let set = keys.map(k=>`${k}=?`).join(',');
+    let sql = `UPDATE users SET ${set} WHERE id = ?`;
+    let [result] = await db.query(sql,[...values,id]);    
+    return result.affectedRows;
+}
+
 module.exports ={
     getAll,
     getOne,
-    remove
+    remove,
+    update
 }
