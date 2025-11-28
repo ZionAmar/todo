@@ -9,13 +9,15 @@ function valuesToAdd(req,res,next){
 }
 
 async function encrypPass(req,res,next){
-    let pass = req.body.pass;
-    console.log(pass);
-    
-    let hashPass = await bcrypt.hash(pass,10);
-    console.log(hashPass);
-
-    req.pass = hashPass;
+    try{
+        let pass = req.body.pass;    
+        let hashPass = await bcrypt.hash(pass,10);
+        req.pass = hashPass;
+        next();
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server error"});
+    }
 }
 
 module.exports = {
