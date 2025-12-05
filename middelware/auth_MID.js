@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 function valuesToAdd(req,res,next){
     let {name,email,userName,pass} = req.body;
@@ -28,8 +29,24 @@ async function encrypPass(req,res,next){
     }
 }
 
+function isLoggedIn(req,res,next){
+    let token = req.cookies.jwt;    
+    if(!token){
+        return res.status(401).json({message:"נא להתחבר למערכת"});
+    }
+    try{
+        let payload = jwt.verify(token,process.env.SECRET_KEY);    
+        req.user = payload;    
+        next();
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server error"});
+    }
+}
+
 module.exports = {
     valuesToAdd,
     encrypPass,
-    valuesToLogin
+    valuesToLogin,
+    isLoggedIn
 }
