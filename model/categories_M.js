@@ -1,8 +1,8 @@
 const db = require('../config/db_config');
 
-async function getAll(){
-    let sql = `SELECT * FROM categories`;
-    let [rows] = await db.query(sql);    
+async function getAll(userId){
+    let sql = `SELECT * FROM categories WHERE user_id = ?`;
+    let [rows] = await db.query(sql,[userId]);    
     return rows;
 }
 

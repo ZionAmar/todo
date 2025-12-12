@@ -2,7 +2,7 @@ const {getAll,add,getOne} = require('../model/categories_M.js');
 
 async function getAllCategories(req,res) {
     try{
-        let categories = await getAll();
+        let categories = await getAll(req.user.id);
         if(categories.length == 0){
             return res.status(400).json({message:"אין נתונים"})
         }
