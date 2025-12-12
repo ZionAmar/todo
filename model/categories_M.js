@@ -18,8 +18,15 @@ async function getOne(catId,userId){
     return result[0];
 }
 
+async function remove(catId,userId){
+    let sql = `DELETE FROM categories WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql,[catId,userId]);    
+    return result.affectedRows;
+}
+
 module.exports ={
     getAll,
     add,
-    getOne
+    getOne,
+    remove
 }
