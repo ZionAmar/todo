@@ -1,4 +1,4 @@
-function validValues(req,res,next){
+function valuesToAdd(req,res,next){
     let text = req.body.text;
     if(!text){
         return res.status(400).json({message:"חסרים נתונים"});
@@ -15,7 +15,25 @@ function isValidId(req,res,next){
     next();
 }
 
+function valuesToEdit(req,res,next){
+    let obj = {};
+    if(req.body.text){
+        obj.text = req.body.text;
+    }
+    if(req.body.isDone){
+        obj.is_done = req.body.isDone;
+    }
+    let keys = Object.keys(obj);
+    if(keys.length === 0){
+        return res.status(400).json({message:"חסרים פרמטרים"})
+    }
+    
+    req.newTask = obj;
+    next();
+}
+
 module.exports = {
-    validValues,
-    isValidId
+    valuesToAdd,
+    isValidId,
+    valuesToEdit
 }
