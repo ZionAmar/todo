@@ -1,4 +1,4 @@
-const {getAll,add} = require('../model/tasks_M.js');
+const {getAll,add,getOne} = require('../model/tasks_M.js');
 
 async function getAllTasks(req,res) {
     try{
@@ -28,7 +28,20 @@ async function addTask(req,res) {
     }
 }
 
+async function getTask(req,res) {
+    try{
+        let task = await getOne(req.id,req.user.id);
+        if(!task){
+            return res.status(400).json({message:`task is not found!`})
+        }
+        res.status(200).json(task);
+    }catch(err){
+        res.status(500).json({message:"Server error"})
+    }
+}
+
 module.exports={
     getAllTasks,
-    addTask
+    addTask,
+    getTask
 }

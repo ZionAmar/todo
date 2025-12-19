@@ -12,7 +12,14 @@ async function add({text,userId}){
     return result.insertId;
 }
 
+async function getOne(taskId,userId){
+    let sql = `SELECT * FROM tasks WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql,[taskId,userId]);    
+    return result[0];
+}
+
 module.exports ={
     getAll,
-    add
+    add,
+    getOne
 }
