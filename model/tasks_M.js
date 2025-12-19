@@ -6,7 +6,13 @@ async function getAll(userId){
     return rows;
 }
 
+async function add({text,userId}){
+    let sql = `INSERT INTO tasks (text,user_id) VALUES (?,?)`;
+    let [result] = await db.query(sql,[text,userId]); 
+    return result.insertId;
+}
+
 module.exports ={
     getAll,
-
+    add
 }

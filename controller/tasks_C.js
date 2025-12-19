@@ -1,4 +1,4 @@
-const {getAll} = require('../model/tasks_M.js');
+const {getAll,add} = require('../model/tasks_M.js');
 
 async function getAllTasks(req,res) {
     try{
@@ -12,7 +12,23 @@ async function getAllTasks(req,res) {
     }
 }
 
+async function addTask(req,res) {
+    try{
+        let text = req.body.text;
+        let userId = req.user.id;
+
+        let taskId = await add({text,userId});
+        if(!taskId){
+            return res.status(500).json({message:"Server error"});
+        }
+        res.status(201).json({message:"נוסף בהצלחה"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server error"});
+    }
+}
 
 module.exports={
     getAllTasks,
+    addTask
 }
