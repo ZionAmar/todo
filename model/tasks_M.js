@@ -18,8 +18,15 @@ async function getOne(taskId,userId){
     return result[0];
 }
 
+async function remove(taskId,userId){
+    let sql = `DELETE FROM tasks WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql,[taskId,userId]);    
+    return result.affectedRows;
+}
+
 module.exports ={
     getAll,
     add,
-    getOne
+    getOne,
+    remove
 }

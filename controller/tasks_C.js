@@ -1,4 +1,4 @@
-const {getAll,add,getOne} = require('../model/tasks_M.js');
+const {getAll,add,getOne,remove} = require('../model/tasks_M.js');
 
 async function getAllTasks(req,res) {
     try{
@@ -40,8 +40,22 @@ async function getTask(req,res) {
     }
 }
 
+async function deleteTask(req,res) {
+    try{
+        let affectedRows = await remove(req.id,req.user.id);
+        if(!affectedRows){
+            return res.status(400).json({message:`task ${req.id} not found!`})
+        }
+        res.status(200).json({message:"deleted!"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server error"})
+    }
+}
+
 module.exports={
     getAllTasks,
     addTask,
-    getTask
+    getTask,
+    deleteTask
 }
