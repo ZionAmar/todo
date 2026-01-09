@@ -97,6 +97,44 @@ async function taskDone(id, elm) {
     }
 }
 
+async function taskToEdit(id) {
+    try {
+        let response = await fetch(`/tasks/${id}`);
+        let data = await response.json();
+        if(!response.ok){
+            alert(data.message);
+        }else{
+            document.getElementById('id').value = data.id;
+            document.getElementById('text').value = data.text;
+        }
+    } catch (err) {
+        alert(err)
+    }
+}
+
+async function editTask(id) {
+    try {
+        let text = document.getElementById('text').value;        
+        let response = await fetch(`/tasks/${id}`,{
+            method:'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({text})
+        })
+        getTasks();
+        document.getElementById('text').value = "";
+    } catch (err) {
+        alert(err)
+    }
+}
+
+function addOrEdit(){
+    let id = document.getElementById('id').value;
+    if(id){
+        editTask(id);
+    }else{
+        addTask();
+    }
+}
 async function addTask() {
     try {
         let text = document.getElementById('text').value;
